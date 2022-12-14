@@ -16,7 +16,9 @@ const fetchProducts = async (searchTerm) => {
 
 const getAvailableProducts = (products) => {
   const availableProducts = products.filter((product) => {
-    return typeof product?.price?.price !== "undefined";
+    const hasPrice = typeof product?.price?.price !== "undefined";
+    const isBlocked = product?.qty?.["00"]?.blocked;
+    return hasPrice && !isBlocked;
   });
 
   return availableProducts;
