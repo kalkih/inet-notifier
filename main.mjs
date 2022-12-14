@@ -2,8 +2,9 @@ import chalk from "chalk";
 import nodeNotifier from "node-notifier";
 
 const URL = "https://www.inet.se/";
-const SEARCH_TERM = "radeon 7900 xtx";
+const SEARCH_TERM = "7900 xtx";
 const INTERVAL = 60;
+const IGNORED_KEYWORDS = ["vattenkyl"];
 
 const { log } = console;
 
@@ -18,7 +19,10 @@ const getAvailableProducts = (products) => {
   const availableProducts = products.filter((product) => {
     const hasPrice = typeof product?.price?.price !== "undefined";
     const isBlocked = product?.qty?.["00"]?.blocked;
-    return hasPrice && !isBlocked;
+    const includesIgnoredKeywords = IGNORED_KEYWORDS.some((keyword) =>
+      product.sellingPoint.toLowerCase().includes(keyword.toLowerCase())
+    );
+    return hasPrice && !isBlocked && !includesIgnoredKeywords;
   });
 
   return availableProducts;
