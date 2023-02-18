@@ -4,13 +4,13 @@
   "description": "",
   "main": "main.mjs",
   "scripts": {
-    "start": "node --no-warnings main.mjs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --no-warnings main.mjs"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Karl Kihlström <its@kvrl.me>",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^5.2.0",
+    "dotenv": "^16.0.3",
     "node-notifier": "^10.0.1"
   }
 }

@@ -1,15 +1,20 @@
 import chalk from "chalk";
 import nodeNotifier from "node-notifier";
+import * as dotenv from "dotenv";
+dotenv.config();
+dotenv.config({ path: `.env.local`, override: true });
 
-const URL = "https://www.inet.se/";
-const SEARCH_TERM = "7900 xtx";
-const INTERVAL = 60;
-const IGNORED_KEYWORDS = ["vattenkyl"];
+const { BASE_URL, SEARCH_TERM, INTERVAL } = process.env;
+const IGNORED_KEYWORDS = process.env.IGNORED_KEYWORDS.split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
 
 const { log } = console;
 
 const fetchProducts = async (searchTerm) => {
-  const url = `${URL}/api/autocomplete?q=${encodeURIComponent(searchTerm)}`;
+  const url = `${BASE_URL}/api/autocomplete?q=${encodeURIComponent(
+    searchTerm
+  )}`;
   const response = await fetch(url);
   const data = await response.json();
   return data.products;
@@ -42,7 +47,7 @@ const notify = (availableProducts) => {
   nodeNotifier.notify({
     title: `${availableProducts.length} products available`,
     sound: true,
-    open: `${URL}/hitta?q=${encodeURIComponent(SEARCH_TERM)}`,
+    open: `${BASE_URL}/hitta?q=${encodeURIComponent(SEARCH_TERM)}`,
     actions: "Open",
     message: availableProducts
       .map((product) => `${product.price.price}sek - ${product.name}`)
